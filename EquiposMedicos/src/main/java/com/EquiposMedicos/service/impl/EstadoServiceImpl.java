@@ -33,11 +33,11 @@ public class EstadoServiceImpl implements EstadoService{
         return estadoDao.findByTipoEstado(tipoEstado);
     }
     
-    @Override
-    @Transactional(readOnly = true)
-    public Estado encontrarEstado(Estado estado) {
-        return estadoDao.findById(estado.getIdEstado()).orElse(null);
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Estado encontrarEstado(Estado estado) {
+//        return estadoDao.findById(estado.getIdEstado()).orElse(null);
+//    }
     
     @Override
     @Transactional

@@ -14,7 +14,7 @@ import java.util.List;
 public interface PrioridadErrorService {
     
     List<PrioridadError> listarPrioridades();
-    PrioridadError encontrarPrioridad(PrioridadError prioridad);
+    //PrioridadError encontrarPrioridad(PrioridadError prioridad);
     void guardar(PrioridadError prioridad);
     void eliminar(PrioridadError prioridad);
 }

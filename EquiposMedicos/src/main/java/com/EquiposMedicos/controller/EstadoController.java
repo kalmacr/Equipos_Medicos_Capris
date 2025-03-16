@@ -49,7 +49,7 @@ public class EstadoController {
     @GetMapping("/nuevo/{tipoEstado}")
     public String estadoNuevoTipo(@PathVariable String tipoEstado, Model model) {
         Estado estado = new Estado();
-        estado.setTipoEstado(tipoEstado);
+     //   estado.setTipoEstado(tipoEstado);
         model.addAttribute("estado", estado);
         return "estado/modifica";
     }
@@ -68,7 +68,7 @@ public class EstadoController {
     
     @GetMapping("/modificar/{idEstado}")
     public String estadoModificar(Estado estado, Model model) {
-        estado = estadoService.encontrarEstado(estado);
+       // estado = estadoService.encontrarEstado(estado);
         model.addAttribute("estado", estado);
         return "estado/modifica";
     }

@@ -49,7 +49,7 @@ public class PrioridadErrorController {
     
     @GetMapping("/modificar/{idPrioridad}")
     public String prioridadModificar(PrioridadError prioridad, Model model) {
-        prioridad = prioridadService.encontrarPrioridad(prioridad);
+      //  prioridad = prioridadService.encontrarPrioridad(prioridad);
         model.addAttribute("prioridad", prioridad);
         return "prioridad/modifica";
     }
