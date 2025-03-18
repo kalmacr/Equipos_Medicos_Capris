@@ -26,11 +26,11 @@ public class CategoriaEquipoServiceImpl implements CategoriaEquipoService {
         return categoriaDao.findAll();
     }
     
-    @Override
-    @Transactional(readOnly = true)
-    public CategoriaEquipo encontrarCategoria(CategoriaEquipo categoria) {
-        return categoriaDao.findById(categoria.getIdCategoria()).orElse(null);
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public CategoriaEquipo encontrarCategoria(CategoriaEquipo categoria) {
+//        return categoriaDao.findById(categoria.getIdCategoria()).orElse(null);
+//    }
     
     @Override
     @Transactional

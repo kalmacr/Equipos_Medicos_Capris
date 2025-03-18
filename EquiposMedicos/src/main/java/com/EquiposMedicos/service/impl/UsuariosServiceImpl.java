@@ -27,17 +27,17 @@ public class UsuariosServiceImpl  implements UsuariosServices{
     public List<Usuario> getUsuarios(boolean activos){
         var lista = usuarioDao.findAll();
         if (activos){
-            lista.removeIf(e ->!e.isActivos());
+         //   lista.removeIf(e ->!e.isActivos());
         }
         
         return  lista;
     }
     
-     @Override
-    @Transactional(readOnly = true)
-    public Usuario getUsuario(Usuario usuario) {
-        return usuarioDao.findById(usuario.getIdUsuario()).orElse(null);
-    }
+//     @Override
+//    @Transactional(readOnly = true)
+//    public Usuario getUsuario(Usuario usuario) {
+//        return usuarioDao.findById(usuario.getIdUsuario()).orElse(null);
+//    }
 
     @Override
     @Transactional

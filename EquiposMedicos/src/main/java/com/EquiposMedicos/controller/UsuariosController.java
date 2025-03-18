@@ -56,7 +56,7 @@ public class UsuariosController {
     
     @GetMapping("/modificar/{idUsuario}")
     public String usuarioModificar(Usuario usuario, Model model) {
-        usuario = usuarioService.getUsuario(usuario);
+       // usuario = usuarioService.getUsuario(usuario);
         model.addAttribute("usuario", usuario);
         return "usuario/modifica"; 
     }

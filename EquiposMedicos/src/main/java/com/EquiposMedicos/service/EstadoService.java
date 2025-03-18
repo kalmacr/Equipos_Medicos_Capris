@@ -15,7 +15,7 @@ public interface EstadoService {
     
     List<Estado> listarEstados();
     List<Estado> listarEstadosPorTipo(String tipoEstado);
-    Estado encontrarEstado(Estado estado);
+    //Estado encontrarEstado(Estado estado);
     void guardar(Estado estado);
     void eliminar(Estado estado);
 }

@@ -27,11 +27,11 @@ public class PrioridadErrorServiceImpl implements PrioridadErrorService {
         return prioridadDao.findAll();
     }
     
-    @Override
-    @Transactional(readOnly = true)
-    public PrioridadError encontrarPrioridad(PrioridadError prioridad) {
-        return prioridadDao.findById(prioridad.getIdPrioridad()).orElse(null);
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public PrioridadError encontrarPrioridad(PrioridadError prioridad) {
+//        return prioridadDao.findById(prioridad.getIdPrioridad()).orElse(null);
+//    }
     
     @Override
     @Transactional

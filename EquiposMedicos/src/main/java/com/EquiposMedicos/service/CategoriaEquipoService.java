@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface CategoriaEquipoService {
     List<CategoriaEquipo> listarCategorias();
-    CategoriaEquipo encontrarCategoria(CategoriaEquipo categoria);
+    //CategoriaEquipo encontrarCategoria(CategoriaEquipo categoria);
     void guardar(CategoriaEquipo categoria);
     void eliminar(CategoriaEquipo categoria);
 }
