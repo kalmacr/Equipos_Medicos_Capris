@@ -12,8 +12,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import lombok.Data;
 
 @Data
@@ -28,14 +30,16 @@ public class Diagnosticos implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idEquipo", referencedColumnName = "idEquipo")
-//    private Equipo equipo;
+     private Equipo equipo;
 
+    @Temporal(TemporalType.DATE) 
     private Date fecha;
+    
     private String descripcionProblema;
 
     @ManyToOne
     @JoinColumn(name = "idError", referencedColumnName = "idError")
-    private Error error;
+    private Errores error;
 
     @ManyToOne
     @JoinColumn(name = "idSolucion", referencedColumnName = "idSolucion")

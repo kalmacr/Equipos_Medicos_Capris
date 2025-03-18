@@ -39,7 +39,6 @@ public class UsuariosServiceImpl  implements UsuariosServices{
    // public Usuario getUsuario(Usuario usuario) {
      //   return usuarioDao.findById(usuario.getIdUsuario()).orElse(null);
    // }
-=======
 //     @Override
 //    @Transactional(readOnly = true)
 //    public Usuario getUsuario(Usuario usuario) {

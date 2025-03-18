@@ -4,10 +4,11 @@
  */
 package com.EquiposMedicos.dao;
 
+import com.EquiposMedicos.domain.Errores;
 import org.springframework.data.jpa.repository.JpaRepository;
 
     
-    public interface ErroresDao extends JpaRepository<Error, Long> {
+    public interface ErroresDao extends JpaRepository<Errores, Long> {
 }
     
 

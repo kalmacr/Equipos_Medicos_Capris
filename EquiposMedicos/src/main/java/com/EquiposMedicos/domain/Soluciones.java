@@ -25,5 +25,5 @@ public class Soluciones implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idError", referencedColumnName = "idError")
-    private Error error;
+    private Errores error;
 }
