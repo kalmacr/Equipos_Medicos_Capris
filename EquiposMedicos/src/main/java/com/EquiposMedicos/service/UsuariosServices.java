@@ -17,7 +17,7 @@ public interface UsuariosServices {
     public List<Usuario> getUsuarios(boolean activos);
     
     
-    public Usuario getUsuario(Usuario usuario);
+    //public Usuario getUsuario(Usuario usuario);
     
 
     public void save(Usuario usuario);

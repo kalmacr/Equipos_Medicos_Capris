@@ -28,11 +28,11 @@ public class CentroServiceImpl implements CentroService{
         return centroDao.findAll();
     }
     
-    @Override
-    @Transactional(readOnly = true)
-    public Centro encontrarCentro(Centro centro) {
-        return centroDao.findById(centro.getIdCentro()).orElse(null);
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Centro encontrarCentro(Centro centro) {
+//        return centroDao.findById(centro.getIdCentro()).orElse(null);
+//    }
     
     @Override
     @Transactional
