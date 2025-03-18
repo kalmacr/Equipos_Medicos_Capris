@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Gestion de equipos</title>
+        
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link th:href="@{/webjars/font-awesome/css/all.css}" rel="stylesheet"/>      
         <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
@@ -17,23 +18,39 @@
         <!-- Fragmento de la Barra de Navegación -->
         <nav th:fragment="header" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" th:href="@{/}">
+                <a class="navbar-brand" th:href="@{/usuario/listado}">
                     <img src="https://th.bing.com/th/id/OIP.Tqi0g6o6WWGRJV4YNW_E1QHaFu?rs=1&pid=ImgDetMain" width="70" height="70" alt="Casa Blanca" style="height: 70px;">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="configDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Configuración
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="configDropdown">
-                        <li><a class="dropdown-item" th:href="@{/usuario/listado}">Usuarios</a></li>
-                        <li><a class="dropdown-item" th:href="@{/centro/listado}">Centros</a></li>
-                        <li><a class="dropdown-item" th:href="@{/categoria/listado}">CategoriasEquipos</a></li>
-                        <li><a class="dropdown-item" th:href="@{/prioridad/listado}">PrioridadesErrores</a></li>
-                        <li><a class="dropdown-item" th:href="@{/estado/listado}">Estado</a></li>
-                    </ul>
+                    <button class="btn btn-outline-primary mx-5">
+
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="configDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Configuración  
+                        </a>
+
+
+                        <ul class="dropdown-menu" aria-labelledby="configDropdown">
+                            <li><a class="dropdown-item" th:href="@{/usuario/listado}">Usuarios</a></li>
+                            <li><a class="dropdown-item" th:href="@{/centro/listado}">Centros</a></li>
+                            <li><a class="dropdown-item" th:href="@{/categoria/listado}">CategoriasEquipos</a></li>
+                            <li><a class="dropdown-item" th:href="@{/prioridad/listado}">PrioridadesErrores</a></li>
+                            <li><a class="dropdown-item" th:href="@{/estado/listado}">Estado</a></li>
+                        </ul>
+                    </button>
+                    <!-- Nuevo Menú: Reportes -->
+                    <button class="btn btn-outline-primary mx-1">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Reportes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+                            <li><a class="dropdown-item" th:href="@{/alertaMantenimiento/listado}">Alertas Mantenimiento</a></li>
+                            <li><a class="dropdown-item" th:href="@{/historialUsuario/listado}">Historial de Usuarios</a></li>
+                            <li><a class="dropdown-item" th:href="@{/reportes/usuarios}">Reporte falta</a></li>
+                        </ul>
+                    </button>
                     <div id="resultsBlock"></div>
                 </div>
             </div>
@@ -47,7 +64,7 @@
         <!-- Pie de página (Footer) -->
         <footer th:fragment="footer" class="bg-dark text-white text-center py-3">
             <p class="lead text-center">
-                &COPY;
+                Gestion de Equipos Medicos &COPY;Derechos Reservados 2025
             </p>
         </footer>
 

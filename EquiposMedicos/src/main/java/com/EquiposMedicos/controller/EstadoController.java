@@ -10,6 +10,7 @@ package com.EquiposMedicos.controller;
  */
 import com.EquiposMedicos.domain.Estado;
 import com.EquiposMedicos.service.EstadoService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ public class EstadoController {
     @GetMapping("/listado")
     public String listado(Model model) {
         var estados = estadoService.listarEstados();
+        System.out.println("Usuarios recuperados: " + estados);
         model.addAttribute("estados", estados);
         model.addAttribute("totalEstados", estados.size());
         model.addAttribute("estado", new Estado());
