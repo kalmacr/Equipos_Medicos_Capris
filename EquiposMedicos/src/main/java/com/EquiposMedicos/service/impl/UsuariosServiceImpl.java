@@ -23,7 +23,7 @@ public class UsuariosServiceImpl  implements UsuariosServices{
     private UsuariosDao usuarioDao;
     
     @Override
-    
+    @Transactional(readOnly = true)
     public List<Usuario> getUsuarios(boolean activos){
         var lista = usuarioDao.findAll();
         if (activos){
@@ -34,7 +34,7 @@ public class UsuariosServiceImpl  implements UsuariosServices{
     }
     
      @Override
-    @Transactional(readOnly = true)
+    
     public Usuario getUsuario(Usuario usuario) {
         return usuarioDao.findById(usuario.getIdUsuario()).orElse(null);
     }
