@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="~{layout/plantilla :: head}">
+        <title>Equipos Medicos</title>
+    </head>
+    <body>
+
+        <!-- 1. Botón Agregar Alerta de Mantenimiento -->
+        <section th:fragment="botonesAgregar" class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-dark btn-block"
+                                data-bs-toggle="modal" data-bs-target="#agregarAlertaMantenimiento">
+                            <i class="fas fa-plus"></i> Agregar Alerta de Mantenimiento
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 2. Modal Agregar alertaMantenimiento -->
+        <section th:fragment="agregarAlertaMantenimiento">
+            <div id="agregarAlertaMantenimiento" class="modal fade" tabindex="-1"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title">Agregar Alerta de Mantenimiento</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form th:action="@{/alertaMantenimiento/guardar}" th:object="${alertaMantenimiento}"
+                              method="POST" class="was-validated" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <!-- Selección de Equipo -->
+                                <div class="mb-3">
+                                    <label for="equipo">Equipo</label>
+                                    <select th:field="*{equipo}" class="form-select" required>
+                                        <option value="" disabled selected>Seleccione un equipo</option>
+                                        <!-- Aquí puedes usar th:each para iterar sobre una lista de equipos -->
+                                        <option th:each="equipos : ${Equipos}"
+                                                th:value="${equipo.idEquipo}"
+                                                th:text="${equipo.nombre}"></option>
+
+                                        <!-- se agrega equipo 1 de prueba -->
+                                    </select>
+                                </div>
+                                <!-- Fecha de Alerta -->
+                                <div class="mb-3">
+                                    <label for="fechaAlerta">Fecha de Alerta</label>
+                                    <input type="date" th:field="*{fechaAlerta}" class="form-control" required />
+                                </div>
+                                <!-- Motivo de la Alerta -->
+                                <div class="mb-3">
+                                    <label for="motivo">Motivo</label>
+                                    <textarea th:field="*{motivo}" class="form-control" rows="3" maxlength="255"></textarea>
+                                </div>
+                                <!-- Estado 
+                                <input type="hidden" th:field="*{idAlerta}" value="${alertaMantenimiento.idAlerta}"/>
+                                 -->  
+                                <div class="mb-3">                              
+                                    <label for="estado">Estado</label>
+                                    <select th:field="*{estado}" class="form-select" required>
+                                        
+                                        <option value="" disabled selected>Seleccione un estado</option>
+                                        <!-- Aquí puedes usar th:each para iterar sobre una lista de estados -->
+                                        <option th:each="estado : ${Estados}"
+                                                th:value="${estado.idEstado}"
+                                                th:text="${estado.nombreEstado}">
+                                            [[${estado.nombre}]]
+                                        </option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="submit">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 3. Listado de Alertas de Mantenimiento -->
+        <section th:fragment="listadoAlertaMantenimiento" id="alertasMantenimiento">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Listado de Alertas de Mantenimiento</h4>
+                            </div>
+                            <div th:if="${alertasMantenimiento != null and !alertasMantenimiento.empty}">
+                                <table class="table table-striped table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Equipo</th>
+                                            <th>Fecha de Alerta</th>
+                                            <th>Motivo</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="alerta, contador : ${alertasMantenimiento}">
+                                            <td>[[${contador.count}]]</td>
+                                            <td>[[${alerta.equipo.nombre}]]</td>
+                                            <td>[[${alerta.fechaAlerta}]]</td>
+                                            <td>[[${alerta.motivo}]]</td>
+                                            <td>[[${alerta.estado.nombre}]]</td>
+                                            <td>
+                                                <a th:href="@{/alertaMantenimiento/modificar/}+${alerta.idAlerta}" class="btn btn-success">
+                                                    <i class="fas fa-pencil"></i> Actualizar
+                                                </a>
+                                                <a th:href="@{/alertaMantenimiento/eliminar/}+${alerta.idAlerta}" class="btn btn-danger">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-center p-2" th:if="${alertasMantenimiento == null or alertasMantenimiento.empty}">
+                                <span>Lista Vacía</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center bg-success text-white mb-3">
+                            <div class="card-body">
+                                <h3>Total de Alertas</h3>
+                                <h4 class="fs-2"><i class="fas fa-tools"></i> [[${totalAlertas}]]</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 4. Formulario Editar Alerta de Mantenimiento -->
+        <section th:fragment="editarAlertaMantenimiento">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <form method="POST" th:action="@{/alertaMantenimiento/guardar}" th:object="${alertaMantenimiento}"
+                          class="was-validated" enctype="multipart/form-data">
+                        <input type="hidden" th:field="*{idAlerta}" />
+                        <section th:replace="~{alertaMantenimiento/fragmentos :: botonesEditar}" />
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <h4>Actualizar Alerta de Mantenimiento</h4>
+                            </div>
+                            <div class="card-body">
+                                <!-- Selección del Equipo -->
+                                <div class="mb-3">
+                                    <label for="equipo">Equipo</label>
+                                    <select th:field="*{equipo}" class="form-select" required>
+                                        <option value="" disabled selected>Seleccione un equipo</option>
+                                        <!-- Lista de equipos -->
+                                        <option th:each="equipo : ${equipos}"
+                                                th:value="${equipo.idEquipo}"
+                                                th:text="${equipo.nombre}"></option>
+                                    </select>
+                                </div>
+                                <!-- Fecha de Alerta -->
+                                <div class="mb-3">
+                                    <label for="fechaAlerta">Fecha de Alerta</label>
+                                    <input type="date" th:field="*{fechaAlerta}" class="form-control" required />
+                                </div>
+                                <!-- Motivo -->
+                                <div class="mb-3">
+                                    <label for="motivo">Motivo</label>
+                                    <textarea th:field="*{motivo}" class="form-control" rows="3" maxlength="255"></textarea>
+                                </div>
+                                <!-- Estado -->
+                                
+                                <div class="mb-3">
+                                    <label for="estado">Estado</label>
+                                    <select th:field="*{estado}" class="form-select" required>
+                                        <option value="" disabled selected>Seleccione un estado</option>
+                                        <!-- Lista de estados -->
+                                        <option th:each="estado : ${estados}"
+                                                th:value="${estado.idEstado}"
+                                                th:text="${estado.nombre}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 5. Botones Editar para Alerta de Mantenimiento -->
+        <section th:fragment="botonesEditar">
+            <div class="container py-4 mb-4 bg-light">
+                <div class="row">
+                    <!-- Botón Regresar -->
+                    <div class="col-md-4 d-grid">
+                        <a th:href="@{/alertaMantenimiento/listado}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Regresar
+                        </a>
+                    </div>
+                    <!-- Botón Eliminar -->
+                    <div class="col-md-4 d-grid">
+                        <a th:href="@{/alertaMantenimiento/eliminar/}+${alertaMantenimiento.idAlerta}" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </div>
+                    <!-- Botón Guardar -->
+                    <div class="col-md-4 d-grid">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i> Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </body>
+</html>
