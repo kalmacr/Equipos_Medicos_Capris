@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout/plantilla :: head}">
+    <title>TechShop</title>
+</head>
+<body>
+
+<!-- 1. Botón Agregar Ubicación -->
+<section th:fragment="botonesAgregarUbicacion" class="py-4 mb-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <button type="button" class="btn btn-dark btn-block"
+                        data-bs-toggle="modal" data-bs-target="#agregarUbicacion">
+                    <i class="fas fa-plus"></i> Agregar Ubicación
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 2. Modal Agregar Ubicación -->
+<section th:fragment="agregarUbicacion">
+    <div id="agregarUbicacion" class="modal fade" tabindex="-1" aria-labelledby="modalUbicacionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">Agregar Ubicación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/ubicaciones/guardar}" th:object="${ubicacion}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" th:field="*{nombre}" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion">Descripción</label>
+                            <textarea th:field="*{descripcion}" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="responsable">Responsable</label>
+                            <input type="text" th:field="*{responsable}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3. Listado de Ubicaciones -->
+<section th:fragment="listadoUbicaciones">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Listado de Ubicaciones</h4>
+                    </div>
+                    <div th:if="${ubicaciones != null and !ubicaciones.empty}">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Responsable</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="ubicacion, contador : ${ubicaciones}">
+                                    <td>[[${contador.count}]]</td>
+                                    <td>[[${ubicacion.nombre}]]</td>
+                                    <td>[[${ubicacion.descripcion}]]</td>
+                                    <td>[[${ubicacion.responsable}]]</td>
+                                    <td>
+                                        <a th:href="@{/ubicaciones/modificar/}+${ubicacion.idUbicacion}" class="btn btn-success">
+                                            <i class="fas fa-pencil"></i> Editar
+                                        </a>
+                                        <a th:href="@{/ubicaciones/eliminar/}+${ubicacion.idUbicacion}" class="btn btn-danger">
+                                            <i class="fas fa-trash"></i> Eliminar
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center p-2" th:if="${ubicaciones == null or ubicaciones.empty}">
+                        <span>Lista Vacía</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-success text-white mb-3">
+                    <div class="card-body">
+                        <h3>Total de Ubicaciones</h3>
+                        <h4 class="fs-2"><i class="fas fa-map-marker-alt"></i> [[${totalUbicaciones}]]</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 4. Formulario Editar Ubicación -->
+<section th:fragment="editarUbicacion">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <form method="POST" th:action="@{/ubicaciones/guardar}" th:object="${ubicacion}" class="was-validated">
+                <input type="hidden" th:field="*{idUbicacion}" />
+                <section th:replace="~{ubicaciones :: botonesEditarUbicacion}" />
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h4>Actualizar Ubicación</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" th:field="*{nombre}" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion">Descripción</label>
+                            <textarea th:field="*{descripcion}" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="responsable">Responsable</label>
+                            <input type="text" th:field="*{responsable}" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- 5. Botones Editar Ubicación -->
+<section th:fragment="botonesEditarUbicacion">
+    <div class="container py-4 mb-4 bg-light">
+        <div class="row">
+            <div class="col-md-4 d-grid">
+                <a th:href="@{/ubicaciones}" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> Regresar
+                </a>
+            </div>
+            <div class="col-md-4 d-grid">
+                <a th:href="@{/ubicaciones/eliminar/}+${ubicacion.idUbicacion}" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Eliminar
+                </a>
+            </div>
+            <div class="col-md-4 d-grid">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-check"></i> Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout/plantilla :: head}">
+    <title>TechShop</title>
+</head>
+<body>
+
+<!-- 1. Botón Agregar Equipo -->
+<section th:fragment="botonesAgregarEquipo" class="py-4 mb-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <button type="button" class="btn btn-dark btn-block"
+                        data-bs-toggle="modal" data-bs-target="#agregarEquipo">
+                    <i class="fas fa-plus"></i> Agregar Equipo
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 2. Modal Agregar Equipo -->
+<section th:fragment="agregarEquipo">
+    <div id="agregarEquipo" class="modal fade" tabindex="-1" aria-labelledby="modalEquipoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">Agregar Equipo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/equipos/guardar}" th:object="${equipo}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" th:field="*{nombre}" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipo">Tipo</label>
+                            <input type="text" th:field="*{tipo}" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="fabricante">Fabricante</label>
+                            <input type="text" th:field="*{fabricante}" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="numeroSerie">Número de Serie</label>
+                            <input type="text" th:field="*{numeroSerie}" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="fechaAdquisicion">Fecha de Adquisición</label>
+                            <input type="date" th:field="*{fechaAdquisicion}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3. Listado de Equipos -->
+<section th:fragment="listadoEquipos">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Listado de Equipos</h4>
+                    </div>
+                    <div th:if="${equipos != null and !equipos.empty}">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
+                                    <th>Fabricante</th>
+                                    <th>Número de Serie</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="equipo, contador : ${equipos}">
+                                    <td>[[${contador.count}]]</td>
+                                    <td>[[${equipo.nombre}]]</td>
+                                    <td>[[${equipo.tipo}]]</td>
+                                    <td>[[${equipo.fabricante}]]</td>
+                                    <td>[[${equipo.numeroSerie}]]</td>
+                                    <td>
+                                        <a th:href="@{/equipos/modificar/}+${equipo.idEquipo}" class="btn btn-success">
+                                            <i class="fas fa-pencil"></i> Editar
+                                        </a>
+                                        <a th:href="@{/equipos/eliminar/}+${equipo.idEquipo}" class="btn btn-danger">
+                                            <i class="fas fa-trash"></i> Eliminar
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center p-2" th:if="${equipos == null or equipos.empty}">
+                        <span>Lista Vacía</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 4. Modal Editar Equipo -->
+<section th:fragment="editarEquipo">
+    <div id="editarEquipo" class="modal fade" tabindex="-1" aria-labelledby="modalEquipoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-white">
+                    <h5 class="modal-title">Editar Equipo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/equipos/actualizar}" th:object="${equipo}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" th:field="*{nombre}" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipo">Tipo</label>
+                            <input type="text" th:field="*{tipo}" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="fabricante">Fabricante</label>
+                            <input type="text" th:field="*{fabricante}" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="numeroSerie">Número de Serie</label>
+                            <input type="text" th:field="*{numeroSerie}" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="fechaAdquisicion">Fecha de Adquisición</label>
+                            <input type="date" th:field="*{fechaAdquisicion}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-warning" type="submit">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
