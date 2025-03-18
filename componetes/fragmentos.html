@@ -1,0 +1,134 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout/plantilla :: head}">
+    <title>TechShop</title>
+</head>
+<body>
+
+    <!-- 1. Botón Agregar Componente -->
+<section th:fragment="botonesAgregarComponente" class="py-4 mb-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <button type="button" class="btn btn-dark btn-block"
+                        data-bs-toggle="modal" data-bs-target="#agregarComponente">
+                    <i class="fas fa-plus"></i> Agregar Componente
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 2. Modal Agregar Componente -->
+<section th:fragment="agregarComponente">
+    <div id="agregarComponente" class="modal fade" tabindex="-1" aria-labelledby="modalComponenteLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">Agregar Componente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/componentes/guardar}" th:object="${componente}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" th:field="*{nombre}" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="estado">Estado</label>
+                            <input type="text" th:field="*{estado}" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="fechaInstalacion">Fecha de Instalación</label>
+                            <input type="date" th:field="*{fechaInstalacion}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3. Listado de Componentes -->
+<section th:fragment="listadoComponentes">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Listado de Componentes</h4>
+                    </div>
+                    <div th:if="${componentes != null and !componentes.empty}">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Estado</th>
+                                    <th>Fecha Instalación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="componente, contador : ${componentes}">
+                                    <td>[[${contador.count}]]</td>
+                                    <td>[[${componente.nombre}]]</td>
+                                    <td>[[${componente.estado}]]</td>
+                                    <td>[[${componente.fechaInstalacion}]]</td>
+                                    <td>
+                                        <a th:href="@{/componentes/modificar/}+${componente.idComponente}" class="btn btn-success">
+                                            <i class="fas fa-pencil"></i> Editar
+                                        </a>
+                                        <a th:href="@{/componentes/eliminar/}+${componente.idComponente}" class="btn btn-danger">
+                                            <i class="fas fa-trash"></i> Eliminar
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 4. Modal Editar Componente -->
+<section th:fragment="editarComponente">
+    <div id="editarComponente" class="modal fade" tabindex="-1" aria-labelledby="modalComponenteLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-white">
+                    <h5 class="modal-title">Editar Componente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/componentes/actualizar}" th:object="${componente}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" th:field="*{nombre}" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="estado">Estado</label>
+                            <input type="text" th:field="*{estado}" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="fechaInstalacion">Fecha de Instalación</label>
+                            <input type="date" th:field="*{fechaInstalacion}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-warning" type="submit">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+</body>
+</html>
