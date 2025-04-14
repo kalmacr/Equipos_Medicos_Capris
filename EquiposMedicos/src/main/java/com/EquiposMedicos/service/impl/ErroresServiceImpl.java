@@ -6,6 +6,7 @@ package com.EquiposMedicos.service.impl;
 
 import com.EquiposMedicos.dao.ErroresDao;
 import com.EquiposMedicos.dao.UsuariosDao;
+import com.EquiposMedicos.domain.Errores;
 import com.EquiposMedicos.domain.Usuario;
 import com.EquiposMedicos.service.ErroresService;
 import com.EquiposMedicos.service.UsuariosServices;
@@ -21,19 +22,16 @@ public class ErroresServiceImpl implements ErroresService {
     private ErroresDao erroresDao;
 
     @Override
-    public List<Error> getErrores(boolean activos) {
+    public List<Errores> getErrores(boolean activos) {
         var lista = erroresDao.findAll();
         // Aquí puedes agregar lógica adicional si es necesario
         return lista;
     }
 
-    @Override
-    public Error getErrorById(Long idError) {
-        return erroresDao.findById(idError).orElse(null);
-    }
+   
 
     @Override
-    public void saveError(Error error) {
+    public void saveError(Errores error) {
         erroresDao.save(error);
     }
 

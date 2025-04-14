@@ -5,6 +5,7 @@
 package com.EquiposMedicos.controller;
 
 
+import com.EquiposMedicos.domain.Errores;
 import com.EquiposMedicos.domain.Usuario;
 import com.EquiposMedicos.service.ErroresService;
 import com.EquiposMedicos.service.UsuariosServices;
@@ -36,7 +37,7 @@ public class ErroresController {
     }
 
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute("error") Error error) {
+    public String guardar(@ModelAttribute("error") Errores error) {
         erroresService.saveError(error);
         return "redirect:/errores/listado";
     }

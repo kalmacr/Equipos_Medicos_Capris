@@ -4,11 +4,12 @@
  */
 package com.EquiposMedicos.service;
 
+import com.EquiposMedicos.domain.Errores;
 import java.util.List;
 
 public interface ErroresService {
-    List<Error> getErrores(boolean activos);
-    Error getErrorById(Long idError);
-    void saveError(Error error);
+    List<Errores> getErrores(boolean activos);
+ 
+    void saveError(Errores error);
     void deleteError(Long idError);
 }

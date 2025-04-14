@@ -8,6 +8,8 @@ import com.EquiposMedicos.domain.Estado;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -19,4 +21,14 @@ public interface EstadoDao extends JpaRepository<Estado, Long> {
 
     @Query("SELECT DISTINCT e.tipoEstado FROM Estado e")
     List<String> findDistinctTiposEstado();
+    
+    @Procedure(procedureName = "insertar_estado")
+    void insertarEstado(
+        @Param("p_nombreEstado") String nombreEstado,
+        @Param("p_descripcion") String descripcion,
+        @Param("p_tipoEstado") String tipoEstado
+    );
+    
+    @Procedure(procedureName = "eliminar_estado")
+    void eliminarEstado(@Param("p_idEstado") Long idEstado);
 }
