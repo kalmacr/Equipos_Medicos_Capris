@@ -13,9 +13,20 @@ import java.util.List;
  */
 public interface EstadoService {
     
-    List<Estado> listarEstados();
+   /* List<Estado> listarEstados();
     List<Estado> listarEstadosPorTipo(String tipoEstado);
-    //Estado encontrarEstado(Estado estado);
     void guardar(Estado estado);
     void eliminar(Estado estado);
+    */
+   
+    List<Estado> getEstados();
+   
+    List<Estado> listarEstadosPorTipo(String tipoEstado);
+    
+    void guardar(Estado estado);
+  
+    void eliminar(Estado estado);
+    
+    Estado encontrarEstados(Estado estados);
+    
 }

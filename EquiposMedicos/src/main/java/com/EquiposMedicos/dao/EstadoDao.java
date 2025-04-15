@@ -19,16 +19,24 @@ public interface EstadoDao extends JpaRepository<Estado, Long> {
 
     List<Estado> findByTipoEstado(String tipoEstado);
 
-    @Query("SELECT DISTINCT e.tipoEstado FROM Estado e")
-    List<String> findDistinctTiposEstado();
     
-    @Procedure(procedureName = "insertar_estado")
+    @Procedure(name = "insertarEstado", procedureName = "estado_mgmt.insertar_estado")
     void insertarEstado(
         @Param("p_nombreEstado") String nombreEstado,
         @Param("p_descripcion") String descripcion,
         @Param("p_tipoEstado") String tipoEstado
     );
     
-    @Procedure(procedureName = "eliminar_estado")
+    @Procedure(name = "eliminarEstado", procedureName = "estado_mgmt.eliminar_estado")
     void eliminarEstado(@Param("p_idEstado") Long idEstado);
+    
+    @Procedure(name = "actualizarEstado", procedureName = "estado_mgmt.actualizar_estado")
+    void actualizarEstado(
+        @Param("p_idEstado") Long idEstado,
+        @Param("p_nombreEstado") String nombreEstado,
+        @Param("p_descripcion") String descripcion,
+        @Param("p_tipoEstado") String tipoEstado
+    );
+    
+    
 }
