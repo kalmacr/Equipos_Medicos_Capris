@@ -50,7 +50,7 @@ public class CategoriaEquipoController {
     
     @GetMapping("/modificar/{idCategoria}")
     public String categoriaModificar(CategoriaEquipo categoria, Model model) {
-       // categoria = categoriaService.encontrarCategoria(categoria);
+       categoria = categoriaService.encontrarCategoria(categoria);
         model.addAttribute("categoria", categoria);
         return "categoria/modifica";
     }

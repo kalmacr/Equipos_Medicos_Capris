@@ -86,14 +86,12 @@ public class EstadoServiceImpl implements EstadoService {
     @Transactional
     public void guardar(Estado estado) {
         if (estado.getIdEstado() == null) {
-            // Si es un nuevo estado, usamos el procedimiento para insertar
             estadoDao.insertarEstado(
                     estado.getNombreEstado(),
                     estado.getDescripcion(),
                     estado.getTipoEstado()
             );
         } else {
-            // Si ya existe, usamos el procedimiento para actualizar
             estadoDao.actualizarEstado(
                     estado.getIdEstado(),
                     estado.getNombreEstado(),
@@ -106,7 +104,6 @@ public class EstadoServiceImpl implements EstadoService {
     @Override
     @Transactional
     public void eliminar(Estado estado) {
-        // Usamos el procedimiento para eliminar en lugar de delete()
         estadoDao.eliminarEstado(estado.getIdEstado());
     }
 

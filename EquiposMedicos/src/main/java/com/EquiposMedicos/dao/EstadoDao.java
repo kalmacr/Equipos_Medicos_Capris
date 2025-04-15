@@ -18,7 +18,7 @@ import org.springframework.data.repository.query.Param;
 public interface EstadoDao extends JpaRepository<Estado, Long> {
 
     List<Estado> findByTipoEstado(String tipoEstado);
-
+    
     
     @Procedure(name = "insertarEstado", procedureName = "estado_mgmt.insertar_estado")
     void insertarEstado(
