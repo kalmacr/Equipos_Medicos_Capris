@@ -4,6 +4,7 @@
  */
 package com.EquiposMedicos.service.impl;
 
+import com.EquiposMedicos.dao.UsuarioRepositoryImpl;
 import com.EquiposMedicos.dao.UsuariosDao;
 import com.EquiposMedicos.domain.Usuario;
 import com.EquiposMedicos.service.UsuariosServices;
@@ -22,6 +23,9 @@ public class UsuariosServiceImpl  implements UsuariosServices{
     @Autowired
     private UsuariosDao usuarioDao;
     
+    @Autowired
+    private UsuarioRepositoryImpl usuarioRepositoryImpl;
+    /*
     @Override
     @Transactional(readOnly = true)
     public List<Usuario> getUsuarios(boolean activos){
@@ -36,9 +40,9 @@ public class UsuariosServiceImpl  implements UsuariosServices{
 //<<<<<<< kevin
  //    @Override
     
-   // public Usuario getUsuario(Usuario usuario) {
-     //   return usuarioDao.findById(usuario.getIdUsuario()).orElse(null);
-   // }
+    public Usuario getUsuario(Usuario usuario) {
+        return usuarioDao.findById(usuario.getIdUsuario()).orElse(null);
+    }
 //     @Override
 //    @Transactional(readOnly = true)
 //    public Usuario getUsuario(Usuario usuario) {
@@ -56,5 +60,35 @@ public class UsuariosServiceImpl  implements UsuariosServices{
     @Transactional
     public void delete(Usuario usuario) {
         usuarioDao.delete(usuario);
+    }
+*/
+    
+      @Override
+    @Transactional(readOnly = true)
+    public List<Usuario> getUsuarios(boolean activos){        
+        return  usuarioRepositoryImpl.getUsuario(1L);
+    }
+    
+    @Override
+    public Usuario getUsuario(Usuario usuario) {
+        return usuarioDao.findById(usuario.getIdUsuario()).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public void save(Usuario usuario) {
+        if (usuario.getIdUsuario()== null) {
+            usuarioDao.insertarEstado(usuario.getNombre(), usuario.getCorreo(), usuario.getRol(), 
+                    usuario.getContrasena());
+        } else {
+            usuarioDao.actualizarEstado(usuario.getIdUsuario(),usuario.getNombre(), usuario.getCorreo(), usuario.getRol(), 
+                    usuario.getContrasena());
+        }
+    }
+
+    @Override
+    @Transactional
+    public void delete(Usuario usuario) {
+        usuarioDao.eliminarEstado(usuario.getIdUsuario());
     }
 }

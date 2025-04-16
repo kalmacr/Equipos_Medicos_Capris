@@ -5,6 +5,7 @@
 package com.EquiposMedicos.service.impl;
 
 import com.EquiposMedicos.dao.CentroDao;
+import com.EquiposMedicos.dao.CentrosRepositoryImpl;
 import com.EquiposMedicos.domain.Centro;
 import com.EquiposMedicos.service.CentroService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +22,20 @@ public class CentroServiceImpl implements CentroService{
     
     @Autowired
     private CentroDao centroDao;
+    @Autowired
+    private CentrosRepositoryImpl centrosRepositoryImpl;
     
-    @Override
+/*    @Override
     @Transactional(readOnly = true)
     public List<Centro> listarCentros() {
         return centroDao.findAll();
     }
     
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Centro encontrarCentro(Centro centro) {
-//        return centroDao.findById(centro.getIdCentro()).orElse(null);
-//    }
+   @Override
+   @Transactional(readOnly = true)
+  public Centro encontrarCentro(Centro centro) {
+  return centroDao.findById(centro.getIdCentro()).orElse(null);
+}
     
     @Override
     @Transactional
@@ -44,6 +47,35 @@ public class CentroServiceImpl implements CentroService{
     @Transactional
     public void eliminar(Centro centro) {
         centroDao.delete(centro);
+    }
+    
+    */
+     @Override
+    @Transactional(readOnly = true)
+    public List<Centro> listarCentros() {
+        return centrosRepositoryImpl.getCentro();
+    }
+    
+   @Override
+   @Transactional(readOnly = true)
+  public Centro encontrarCentro(Centro centro) {
+  return centroDao.findById(centro.getIdCentro()).orElse(null);
+}
+    
+    @Override
+    @Transactional
+    public void guardar(Centro centro) {
+        if (centro.getIdCentro()== null) {
+            centroDao.insertarCentro(centro.getNombre(),centro.getTiempoRespuestaHoras());
+        } else {
+            centroDao.actualizarCentro(centro.getIdCentro(), centro.getNombre(), centro.getTiempoRespuestaHoras());
+        }
+    }
+    
+    @Override
+    @Transactional
+    public void eliminar(Centro centro) {
+        centroDao.eliminarCentro(centro.getIdCentro());
     }
     
 }

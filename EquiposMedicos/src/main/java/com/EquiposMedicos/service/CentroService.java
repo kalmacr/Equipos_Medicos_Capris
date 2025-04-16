@@ -14,7 +14,7 @@ import java.util.List;
 public interface CentroService {
     
     List<Centro> listarCentros();
-    //Centro encontrarCentro(Centro centro);
+    Centro encontrarCentro(Centro centro);
     void guardar(Centro centro);
     void eliminar(Centro centro);
 }

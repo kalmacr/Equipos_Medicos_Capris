@@ -69,7 +69,7 @@ public class CategoriaEquipoServiceImpl implements CategoriaEquipoService {
             categoriaDao.insertarCategoriaEquipoDao(categoria.getNombreCategoria()
             );
         } else {
-            categoriaDao.actualizarCategoriaEquipoDao(categoria.getNombreCategoria());
+            categoriaDao.actualizarCategoriaEquipoDao(categoria.getIdCategoria(),categoria.getNombreCategoria());
         }
     }
 

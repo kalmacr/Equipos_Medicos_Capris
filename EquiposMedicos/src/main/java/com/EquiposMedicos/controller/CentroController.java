@@ -49,7 +49,7 @@ public class CentroController {
     
     @GetMapping("/modificar/{idCentro}")
     public String centroModificar(Centro centro, Model model) {
-        //centro = centroService.encontrarCentro(centro);
+        centro = centroService.encontrarCentro(centro);
         model.addAttribute("centro", centro);
         return "centro/modifica";
     }

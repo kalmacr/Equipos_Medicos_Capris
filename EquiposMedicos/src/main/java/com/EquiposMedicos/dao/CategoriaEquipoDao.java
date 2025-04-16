@@ -25,6 +25,7 @@ public interface CategoriaEquipoDao extends JpaRepository<CategoriaEquipo, Long>
     
     @Procedure(name = "actualizarEstado", procedureName = "categoria_equipo_mgmt.actualizar_categoria_equipo")
     void actualizarCategoriaEquipoDao(
+        @Param("p_idCategoria") Long idCategoria,    
         @Param("p_nombreCategoria") String nombreCategoria
     );
 }
