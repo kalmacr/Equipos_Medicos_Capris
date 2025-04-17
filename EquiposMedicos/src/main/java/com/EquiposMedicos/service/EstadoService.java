@@ -29,4 +29,6 @@ public interface EstadoService {
     
     Estado encontrarEstados(Estado estados);
     
+    Estado encontrarEstadosbyId(Long idEstados);
+    
 }

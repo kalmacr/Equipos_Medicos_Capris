@@ -112,5 +112,10 @@ public class EstadoServiceImpl implements EstadoService {
     public Estado encontrarEstados(Estado estados) {
         return estadoDao.findById(estados.getIdEstado()).orElse(null);
     }
+    @Override
+    @Transactional
+    public Estado encontrarEstadosbyId(Long idEstados) {
+        return estadoDao.findById(idEstados).orElse(null);
+    }
 
 }

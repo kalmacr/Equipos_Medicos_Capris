@@ -36,18 +36,10 @@
                               method="POST" class="was-validated" enctype="multipart/form-data">
                             <div class="modal-body">
                                 <!-- Selección de Equipo -->
-                                <div class="mb-3">
-                                    <label for="equipo">Equipo</label>
-                                    <select th:field="*{equipo}" class="form-select" required>
-                                        <option value="" disabled selected>Seleccione un equipo</option>
-                                        <!-- Aquí puedes usar th:each para iterar sobre una lista de equipos -->
-                                        <option th:each="equipos : ${Equipos}"
-                                                th:value="${equipo.idEquipo}"
-                                                th:text="${equipo.nombre}"></option>
-
-                                        <!-- se agrega equipo 1 de prueba -->
-                                    </select>
-                                </div>
+                                <select class="form-control" th:field="*{equipo}">
+                                    <option value="">Seleccione un equipo</option>
+                                    <option th:each="equipo : ${Equipos}" th:value="${equipo.idEquipo}">[[${equipo.nombre}]]</option>
+                                </select>
                                 <!-- Fecha de Alerta -->
                                 <div class="mb-3">
                                     <label for="fechaAlerta">Fecha de Alerta</label>
@@ -60,11 +52,11 @@
                                 </div>
                                 <!-- Estado 
                                 <input type="hidden" th:field="*{idAlerta}" value="${alertaMantenimiento.idAlerta}"/>
-                                 -->  
+                                -->  
                                 <div class="mb-3">                              
                                     <label for="estado">Estado</label>
                                     <select th:field="*{estado}" class="form-select" required>
-                                        
+
                                         <option value="" disabled selected>Seleccione un estado</option>
                                         <!-- Aquí puedes usar th:each para iterar sobre una lista de estados -->
                                         <option th:each="estado : ${Estados}"
@@ -113,7 +105,7 @@
                                             <td>[[${alerta.equipo.nombre}]]</td>
                                             <td>[[${alerta.fechaAlerta}]]</td>
                                             <td>[[${alerta.motivo}]]</td>
-                                            <td>[[${alerta.estado.nombre}]]</td>
+                                            <td>[[${alerta.estado.nombreEstado}]]</td>
                                             <td>
                                                 <a th:href="@{/alertaMantenimiento/modificar/}+${alerta.idAlerta}" class="btn btn-success">
                                                     <i class="fas fa-pencil"></i> Actualizar
@@ -162,9 +154,9 @@
                                 <div class="mb-3">
                                     <label for="equipo">Equipo</label>
                                     <select th:field="*{equipo}" class="form-select" required>
-                                        <option value="" disabled selected>Seleccione un equipo</option>
+         
                                         <!-- Lista de equipos -->
-                                        <option th:each="equipo : ${equipos}"
+                                        <option th:each="equipo : ${Equipos}"
                                                 th:value="${equipo.idEquipo}"
                                                 th:text="${equipo.nombre}"></option>
                                     </select>
@@ -180,15 +172,14 @@
                                     <textarea th:field="*{motivo}" class="form-control" rows="3" maxlength="255"></textarea>
                                 </div>
                                 <!-- Estado -->
-                                
+
                                 <div class="mb-3">
                                     <label for="estado">Estado</label>
                                     <select th:field="*{estado}" class="form-select" required>
-                                        <option value="" disabled selected>Seleccione un estado</option>
                                         <!-- Lista de estados -->
-                                        <option th:each="estado : ${estados}"
+                                        <option th:each="estado : ${Estados}"
                                                 th:value="${estado.idEstado}"
-                                                th:text="${estado.nombre}"></option>
+                                                th:text="${estado.nombreEstado}"></option>
                                     </select>
                                 </div>
                             </div>

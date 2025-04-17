@@ -5,6 +5,7 @@
 package com.EquiposMedicos.service.impl;
 
 import com.EquiposMedicos.dao.UbicacionDao;
+import com.EquiposMedicos.dao.UbicacionesRepositoryImpl;
 import com.EquiposMedicos.domain.Ubicacion;
 import com.EquiposMedicos.service.UbicacionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,10 @@ import java.util.List;
 public class UbicacionServiceImpl implements UbicacionService{
      @Autowired
     private UbicacionDao ubicacionDao;
-    
+     
+     @Autowired
+    private UbicacionesRepositoryImpl ubicacionesRepositoryImpl;
+    /*
     @Override
     @Transactional(readOnly = true)
     public List<Ubicacion> listarUbicacions() {
@@ -43,5 +47,38 @@ public class UbicacionServiceImpl implements UbicacionService{
     @Transactional
     public void eliminar(Ubicacion ubicacion) {
         ubicacionDao.delete(ubicacion);
+    }
+*/
+     
+     @Override
+    @Transactional(readOnly = true)
+    public List<Ubicacion> listarUbicacions() {
+        return ubicacionesRepositoryImpl.getUbicaciones();
+    }
+    
+  
+    @Override
+    @Transactional(readOnly = true)
+    public Ubicacion encontrarUbicacion(Ubicacion ubicacion) {
+        return ubicacionDao.findById(ubicacion.getIdUbicacion()).orElse(null);
+    }
+    
+    @Override
+    @Transactional
+    public void guardar(Ubicacion ubicacion) {
+        if(ubicacion.getIdUbicacion() == null){
+            ubicacionDao.insertarEquipo(ubicacion.getNombre(), ubicacion.getDescripcion(), 
+                    ubicacion.getResponsable(), ubicacion.getCentro().getIdCentro());
+        }
+        else{
+            ubicacionDao.actualizarEquipo(ubicacion.getIdUbicacion(),ubicacion.getNombre(), ubicacion.getDescripcion(), 
+                    ubicacion.getResponsable(), ubicacion.getCentro().getIdCentro());
+        }
+    }
+    
+    @Override
+    @Transactional
+    public void eliminar(Ubicacion ubicacion) {
+        ubicacionDao.eliminarEquipo(ubicacion.getIdUbicacion());
     }
 }

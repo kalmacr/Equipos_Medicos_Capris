@@ -12,4 +12,6 @@ public interface ErroresService {
  
     void saveError(Errores error);
     void deleteError(Long idError);
+    Errores getError(Errores error);
+    Errores getErrorByID(Long idError);
 }

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="~{layout/plantilla :: head}">
+        <title>TechShop</title>
+    </head>
+    <body>
+
+        <section th:fragment="botonesAgregarSolucion" class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-dark btn-block"
+                                data-bs-toggle="modal" data-bs-target="#agregarSolucion">
+                            <i class="fas fa-plus"></i> Agregar Solución
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section th:fragment="agregarSolucion">
+            <div id="agregarSolucion" class="modal fade" tabindex="-1" aria-labelledby="modalSolucionLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title">Agregar Solución</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form th:action="@{/soluciones/guardar}" method="POST">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="descripcion">Descripción</label>
+                                    <textarea name="descripcion" id="descripcion" class="form-control" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="error">Error Asociado</label>
+                                    <select name="error.idError" id="error" class="form-select" required>
+                                        <option value="" disabled selected>Seleccione un error</option>
+                                        <option th:each="e : ${errores}" 
+                                                th:value="${e.idError}" 
+                                                th:text="${e.descripcion}"></option>
+                                    </select>
+                                </div>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="submit">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section th:fragment="listadoSoluciones">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Listado de Soluciones</h4>
+                            </div>
+                            <div th:if="${soluciones != null and !soluciones.empty}">
+                                <table class="table table-striped table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Descripción de la Solucion</th>
+                                            <th>Error</th>
+                                            <th>Codigo de Error</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="solucion, contador : ${soluciones}">
+                                            <td>[[${contador.count}]]</td>
+                                            <td>[[${solucion.descripcion}]]</td>
+                                            <td>[[${solucion.error?.descripcion}]]</td>
+                                            <td>[[${solucion.error?.codigoError}]]</td>
+                                            <td>
+                                                <a th:href="@{/soluciones/modificar/}+${solucion.idSolucion}" class="btn btn-success">
+                                                    <i class="fas fa-pencil"></i> Editar
+                                                </a>
+                                                <a th:href="@{/soluciones/eliminar/}+${solucion.idSolucion}" class="btn btn-danger">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-center p-2" th:if="${soluciones == null or soluciones.empty}">
+                                <span>Lista Vacía</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section th:fragment="editarSolucion">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <form method="POST" th:action="@{/soluciones/guardar}" th:object="${solucion}"
+                          class="was-validated">
+                        <input type="hidden" th:field="*{idSolucion}" />
+
+                        <section th:replace="~{soluciones/fragmentos :: botonesEditar}" />
+
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <h4>Editar Solución</h4>
+                            </div>
+                            <div class="card-body">
+    
+                                <div class="mb-3">
+                                    <label for="descripcion">Descripción</label>
+                                    <textarea th:field="*{descripcion}" class="form-control" rows="3"></textarea>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="error">Error Asociado</label>
+                                    <select name="error.idError" id="error" class="form-select" required>
+                                        <option th:each="e : ${errores}" 
+                                                th:value="${e.idError}" 
+                                                th:text="${e.descripcion}"></option>
+                                    </select>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section th:fragment="botonesEditar">
+            <div class="container py-4 mb-4 bg-light">
+                <div class="row">
+                    <div class="col-md-4 d-grid">
+                        <a th:href="@{/soluciones/listado}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Regresar
+                        </a>
+                    </div>
+                    <div class="col-md-4 d-grid">
+                        <a th:href="@{/soluciones/eliminar/}+${solucion.idSolucion}" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </div>
+                    <div class="col-md-4 d-grid">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i> Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </body>
+</html>

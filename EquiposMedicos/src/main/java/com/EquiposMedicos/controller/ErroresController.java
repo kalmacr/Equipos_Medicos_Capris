@@ -26,22 +26,35 @@ public class ErroresController {
 
     @Autowired
     private ErroresService erroresService;
-
+    
     @GetMapping("/listado")
     public String listado(Model model) {
         var errores = erroresService.getErrores(false);
         model.addAttribute("errores", errores);
         model.addAttribute("totalErrores", errores.size());
-        model.addAttribute("error", new Error());
+        model.addAttribute("error", new Errores());
         return "errores/listado";
     }
-
+    
+    @GetMapping("/nuevo")
+    public String nuevoError(Model model) {
+        model.addAttribute("error", new Errores());
+        return "errores/agregarError";
+    }
+    
+    @GetMapping("/editar/{idError}")
+    public String editar(Errores error, Model model) {
+        error = erroresService.getError(error);
+        model.addAttribute("error", error);
+        return "errores/modifica";
+    }
+    
     @PostMapping("/guardar")
     public String guardar(@ModelAttribute("error") Errores error) {
         erroresService.saveError(error);
         return "redirect:/errores/listado";
     }
-
+    
     @GetMapping("/eliminar/{idError}")
     public String eliminar(@PathVariable Long idError) {
         erroresService.deleteError(idError);

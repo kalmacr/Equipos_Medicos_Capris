@@ -5,6 +5,7 @@
 package com.EquiposMedicos.controller;
 
 import com.EquiposMedicos.domain.Ubicacion;
+import com.EquiposMedicos.service.CentroService;
 import com.EquiposMedicos.service.UbicacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,42 +17,51 @@ import org.springframework.web.bind.annotation.*;
  */
 
    @Controller
-@RequestMapping("/ubicacion")
+@RequestMapping("/ubicaciones")
 public class UbicacionController {
     @Autowired
     private UbicacionService ubicacionService;
     
+    @Autowired
+    private CentroService centroService;
+
     @GetMapping("/listado")
     public String listado(Model model) {
         var ubicacions = ubicacionService.listarUbicacions();
+        var centros = centroService.listarCentros(); 
+        model.addAttribute("centros", centros); 
         model.addAttribute("ubicacions", ubicacions);
         model.addAttribute("totalUbicacions", ubicacions.size());
         model.addAttribute("ubicacion", new Ubicacion());
-        return "ubicacion/listado";
+        return "ubicaciones/listado";
     }
-    
+
     @GetMapping("/nuevo")
-    public String ubicacionNuevo(Ubicacion ubicacion) {
-        return "ubicacion/modifica";
+    public String ubicacionNuevo(Ubicacion ubicacion, Model model) {
+        var centros = centroService.listarCentros(); // Obtén la lista de centros
+        model.addAttribute("centros", centros); // Agrega la lista al modelo
+        return "ubicaciones/modifica";
     }
-    
+
     @PostMapping("/guardar")
     public String ubicacionGuardar(Ubicacion ubicacion) {
+        
         ubicacionService.guardar(ubicacion);
-        return "redirect:/ubicacion/listado";
+        return "redirect:/ubicaciones/listado";
     }
-    
+
     @GetMapping("/eliminar/{idUbicacion}")
     public String ubicacionEliminar(Ubicacion ubicacion) {
         ubicacionService.eliminar(ubicacion);
-        return "redirect:/ubicacion/listado";
+        return "redirect:/ubicaciones/listado";
     }
-    
+
     @GetMapping("/modificar/{idUbicacion}")
     public String ubicacionModificar(Ubicacion ubicacion, Model model) {
+        model.addAttribute("centros", centroService.listarCentros()); 
         ubicacion = ubicacionService.encontrarUbicacion(ubicacion);
         model.addAttribute("ubicacion", ubicacion);
-        return "ubicacion/modifica";
+        return "ubicaciones/modifica";
     }
     
 }

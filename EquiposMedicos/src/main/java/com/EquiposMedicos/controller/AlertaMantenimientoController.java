@@ -10,6 +10,7 @@ import com.EquiposMedicos.domain.AlertaMantenimiento;
 import com.EquiposMedicos.domain.Equipo;
 import com.EquiposMedicos.domain.Estado;
 import com.EquiposMedicos.service.AlertaMantenimientoService;
+import com.EquiposMedicos.service.EquiposService;
 import com.EquiposMedicos.service.EstadoService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,17 @@ public class AlertaMantenimientoController {
     @Autowired
     private EstadoDao estadoDao;
     
+    @Autowired
+    private EquiposService equiposService;
+    
     @GetMapping("/listado")
     public String listado(Model model) {
         var alertas = alertaMantenimientoService.listarAlertaMantenimientos();
         List<Estado>Estados = estadoDao.findAll();
-        model.addAttribute("Estados", Estados); // Añade los estados al modelo
+        List<Equipo>equipos = equiposService.listarEquiposs();
+        System.out.println("Estados compro 1112 cargados: " + equipos);
+        model.addAttribute("Estados", Estados);
+        model.addAttribute("Equipos", equipos); 
         model.addAttribute("alertasMantenimiento", alertas);
         model.addAttribute("totalAlertas", alertas.size());
         model.addAttribute("alertaMantenimiento", new AlertaMantenimiento());
@@ -75,7 +82,9 @@ public class AlertaMantenimientoController {
     @GetMapping("/modificar/{idAlerta}")
     public String alertaMantenimientoModificar(AlertaMantenimiento alertaMantenimiento, Model model) {
         List<Estado>Estados = estadoDao.findAll();
-        model.addAttribute("Estados", Estados); // Añade los estados al modelo
+        List<Equipo>Equipos = equipoDao.findAll();
+        model.addAttribute("Equipos", Equipos);
+        model.addAttribute("Estados", Estados);
         alertaMantenimiento = alertaMantenimientoService.encontrarAlertaMantenimiento(alertaMantenimiento);
         model.addAttribute("alertaMantenimiento", alertaMantenimiento);
         return "alertaMantenimiento/modifica";

@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -28,8 +29,8 @@ public class HistorialUsuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idHistorial;
     
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") 
     @Column(name = "fechaHora", nullable = false)
-    
     private LocalDateTime fechaHora;
 
     //private TIMESTAMP fechaHora;

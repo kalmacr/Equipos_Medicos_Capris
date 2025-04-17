@@ -15,25 +15,32 @@ import lombok.Data;
  */
 @Data
 @Entity
-@Table(name = "Ubicacions")
+@Table(name = "Ubicaciones")
 public class Ubicacion implements Serializable{
     
-     @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUbicacion;
-    
+
     @Column(nullable = false, length = 100)
     private String nombre;
-    
-    @Column(nullable = false)
-    private Integer tiempoRespuestaHoras;
 
-    public Ubicacion(String nombre, Integer tiempoRespuestaHoras) {
+ 
+    private String descripcion;
+
+    @Column(length = 100)
+    private String responsable;
+
+    @ManyToOne
+    @JoinColumn(name = "idCentro", nullable = false)
+    private Centro centro;
+
+    public Ubicacion(String nombre, String descripcion, String responsable, Centro centro) {
         this.nombre = nombre;
-        this.tiempoRespuestaHoras = tiempoRespuestaHoras;
+        this.descripcion = descripcion;
+        this.responsable = responsable;
+        this.centro = centro;
     }
-
-    
     public Ubicacion() {
     }
     

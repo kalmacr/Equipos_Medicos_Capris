@@ -17,6 +17,7 @@ import jakarta.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @Entity
@@ -30,9 +31,10 @@ public class Diagnosticos implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idEquipo", referencedColumnName = "idEquipo")
-     private Equipo equipo;
+    private Equipo equipo;
 
-    @Temporal(TemporalType.DATE) 
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fecha;
     
     private String descripcionProblema;
@@ -44,4 +46,16 @@ public class Diagnosticos implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idSolucion", referencedColumnName = "idSolucion")
     private Soluciones solucion;
+
+    public Diagnosticos(Equipo equipo, Date fecha, String descripcionProblema, Errores error, Soluciones solucion) {
+        this.equipo = equipo;
+        this.fecha = fecha;
+        this.descripcionProblema = descripcionProblema;
+        this.error = error;
+        this.solucion = solucion;
+    }
+
+    public Diagnosticos() {
+    }
+
 }

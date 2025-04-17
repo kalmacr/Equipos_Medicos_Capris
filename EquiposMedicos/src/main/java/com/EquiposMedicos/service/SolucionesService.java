@@ -8,7 +8,7 @@ import com.EquiposMedicos.domain.Soluciones;
 import java.util.List;
 
 public interface SolucionesService {
-    List<Soluciones> getSoluciones(boolean activos);
+    List<Soluciones> getSoluciones();
     Soluciones getSolucionById(Long idSolucion);
     void saveSolucion(Soluciones solucion);
     void deleteSolucion(Long idSolucion);

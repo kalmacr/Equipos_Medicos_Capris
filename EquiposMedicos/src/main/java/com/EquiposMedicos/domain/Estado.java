@@ -9,12 +9,13 @@ package com.EquiposMedicos.domain;
  * @author Fabián Vargas
  */
 import jakarta.persistence.*;
+import java.io.Serializable;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "Estado")
-public class Estado {
+public class Estado implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,8 +2,10 @@ package com.EquiposMedicos.domain;
 
 
 import jakarta.persistence.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -24,8 +26,10 @@ public class AlertaMantenimiento {
     @ManyToOne
     @JoinColumn(name = "idEquipo", nullable = false)
     private Equipo equipo; // Referencia a la entidad Equipos (clave foránea)
+    
+    @Temporal(TemporalType.DATE)
     @Column(name = "fechaAlerta", nullable = false)
-    private LocalDate fechaAlerta; // Fecha de la alerta (utilizando LocalDate)
+    private java.sql.Date fechaAlerta; 
 
     @Column(name = "motivo", length = 255)
     private String motivo; 
@@ -34,7 +38,7 @@ public class AlertaMantenimiento {
     @JoinColumn(name = "idEstado")
     private Estado estado; 
     
-    public AlertaMantenimiento(Equipo equipo, LocalDate fechaAlerta, String motivo, Estado estado) {
+    public AlertaMantenimiento(Equipo equipo, Date fechaAlerta, String motivo, Estado estado) {
         this.equipo = equipo;
         this.fechaAlerta = fechaAlerta;
         this.motivo = motivo;

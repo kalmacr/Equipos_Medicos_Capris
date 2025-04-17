@@ -4,6 +4,7 @@ import com.EquiposMedicos.dao.UsuariosDao;
 import com.EquiposMedicos.domain.HistorialUsuario;
 import com.EquiposMedicos.domain.Usuario;
 import com.EquiposMedicos.service.HistorialUsuarioService;
+import com.EquiposMedicos.service.UsuariosServices;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,8 @@ public class HistorialUsuarioController {
 
     @Autowired
     private HistorialUsuarioService historialUsuarioService;
-
+    @Autowired
+    private UsuariosServices usuarioService;
     @Autowired
     private UsuariosDao usuariosDao;
 
@@ -31,7 +33,7 @@ public class HistorialUsuarioController {
     public String listado(Model model) {
         var historial = historialUsuarioService.listarHistorialUsuario();
         List<Usuario> Usuarios = usuariosDao.findAll();
-        model.addAttribute("Usuarios", Usuarios); // Añade los estados al modelo
+        model.addAttribute("Usuarios", Usuarios);
         model.addAttribute("historialUsuarioList", historial);
         model.addAttribute("totalHistorialUsuario", historial.size());
         model.addAttribute("nuevoHistorialUsuario", new HistorialUsuario());
@@ -42,7 +44,7 @@ public class HistorialUsuarioController {
     @GetMapping("/nuevo")
     public String historialNuevo(Model model) {
         List<Usuario> Usuarios = usuariosDao.findAll();
-        model.addAttribute("Usuarios", Usuarios); // Añade los estados al modelo
+        model.addAttribute("Usuarios", Usuarios);
         model.addAttribute("historialUsuario", new HistorialUsuario());
         System.out.println("Estados compro 1112 cargados: " + Usuarios);
 
@@ -65,8 +67,8 @@ public class HistorialUsuarioController {
 
     @GetMapping("/modificar/{idHistorial}")
     public String historialUsuarioModificar(HistorialUsuario historialUsuario, Model model) {
-        List<Usuario> Usuarios = usuariosDao.findAll();
-        model.addAttribute("Usuarios", Usuarios); // Añade los estados al modelo
+        List<Usuario> Usuarios = usuarioService.getUsuarios(true);
+        model.addAttribute("Usuarios", Usuarios);
         historialUsuario = historialUsuarioService.encontrarHistorialUsuario(historialUsuario);
         model.addAttribute("historialUsuario", historialUsuario);
         return "historialUsuario/modifica";

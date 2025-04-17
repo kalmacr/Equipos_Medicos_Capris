@@ -5,6 +5,7 @@
 package com.EquiposMedicos.service.impl;
 
 import com.EquiposMedicos.dao.ErroresDao;
+import com.EquiposMedicos.dao.ErroresRepositoryImpl;
 import com.EquiposMedicos.dao.UsuariosDao;
 import com.EquiposMedicos.domain.Errores;
 import com.EquiposMedicos.domain.Usuario;
@@ -21,7 +22,12 @@ public class ErroresServiceImpl implements ErroresService {
     @Autowired
     private ErroresDao erroresDao;
 
-    @Override
+    @Autowired
+    private ErroresRepositoryImpl erroresRepositoryImpl;
+   
+    
+    /*
+     @Override
     public List<Errores> getErrores(boolean activos) {
         var lista = erroresDao.findAll();
         // Aquí puedes agregar lógica adicional si es necesario
@@ -39,4 +45,47 @@ public class ErroresServiceImpl implements ErroresService {
     public void deleteError(Long idError) {
         erroresDao.deleteById(idError);
     }
+    
+    @Override
+    public Errores getError(Errores error) {
+      
+      return erroresDao.findById(error.getIdError()).orElse(null);
+    }
+*/
+    
+    @Override
+    public List<Errores> getErrores(boolean activos) {
+        var lista = erroresRepositoryImpl.getErrores();
+        return lista;
+    }
+
+   
+
+    @Override
+    public void saveError(Errores error) {
+        if(error.getIdError() ==null){
+            erroresDao.insertarEquipo(error.getCodigoError(), error.getDescripcion(), error.getFechaRegistro(), error.getTipo());
+        }else
+        {
+            erroresDao.actualizarEquipo(error.getIdError(),error.getCodigoError(), error.getDescripcion(), error.getFechaRegistro(), error.getTipo());
+        }
+    }
+
+    @Override
+    public void deleteError(Long idError) {
+        erroresDao.eliminarEquipo(idError);
+    }
+    
+    @Override
+    public Errores getError(Errores error) {
+      
+      return erroresDao.findById(error.getIdError()).orElse(null);
+    }
+    
+    @Override
+    public Errores getErrorByID(Long idError) {
+      
+      return erroresDao.findById(idError).orElse(null);
+    }
+    
 }

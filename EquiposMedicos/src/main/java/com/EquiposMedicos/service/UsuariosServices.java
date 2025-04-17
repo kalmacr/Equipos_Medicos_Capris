@@ -18,7 +18,7 @@ public interface UsuariosServices {
     
     
     public Usuario getUsuario(Usuario usuario);
-    
+    public Usuario getUsuarioBYID(Long idUsuario);
     public void save(Usuario usuario);
     
     

@@ -105,7 +105,7 @@ public class EstadoController {
     @GetMapping("/nuevo/{tipoEstado}")
     public String estadoNuevoTipo(@PathVariable String tipoEstado, Model model) {
         Estado estado = new Estado();
-        estado.setTipoEstado(tipoEstado); // Descomento esta línea para que funcione correctamente
+        estado.setTipoEstado(tipoEstado);
         model.addAttribute("estado", estado);
         return "estado/modifica";
     }

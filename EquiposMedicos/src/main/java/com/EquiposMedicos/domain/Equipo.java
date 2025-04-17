@@ -2,8 +2,12 @@
 package com.EquiposMedicos.domain;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
+import java.sql.Date;
+import java.time.LocalDate;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -12,37 +16,52 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "Equipos")
-public class Equipo {
+public class Equipo implements Serializable{
 
-    @Id
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEquipo;
-    
+
     @Column(name = "nombre", length = 100, nullable = false)
     private String nombre;
-    
+
     @Column(name = "tipo", length = 50)
     private String tipo;
-    
+
     @Column(name = "fabricante", length = 100)
     private String fabricante;
-    
+
     @Column(name = "numeroSerie", length = 100)
     private String numeroSerie;
-    
+
+    @Column(name = "fechaAdquisicion")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechaAdquisicion;
+
+    @ManyToOne
+    @JoinColumn(name = "idUbicacion", nullable = false)
+    private Ubicacion ubicacion;
+
+    @ManyToOne
+    @JoinColumn(name = "idCategoria", nullable = false)
+    private CategoriaEquipo categoriaEquipo;
+
     @ManyToOne
     @JoinColumn(name = "idEstado")
-    private Estado estado; 
+    private Estado estado;
 
-    public Equipo() {
-    }
-
-    public Equipo(String nombre, String tipo, String fabricante, String numeroSerie, Estado estado) {
+    public Equipo(String nombre, String tipo, String fabricante, String numeroSerie, LocalDate fechaAdquisicion, Ubicacion ubicacion, CategoriaEquipo categoriaEquipo, Estado estado) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.fabricante = fabricante;
         this.numeroSerie = numeroSerie;
+        this.fechaAdquisicion = fechaAdquisicion;
+        this.ubicacion = ubicacion;
+        this.categoriaEquipo = categoriaEquipo;
         this.estado = estado;
+    }
+
+    public Equipo() {
     }
 }
 

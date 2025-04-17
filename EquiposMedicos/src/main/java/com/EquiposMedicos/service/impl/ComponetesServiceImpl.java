@@ -5,6 +5,7 @@
 package com.EquiposMedicos.service.impl;
 
 import com.EquiposMedicos.dao.ComponentesDao;
+import com.EquiposMedicos.dao.ComponetnesRepositoryImpl;
 import com.EquiposMedicos.domain.Componentes;
 import com.EquiposMedicos.service.ComponentesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,16 @@ import java.util.List;
  *
  * @author Chope2805
  */
-public class ComponetesServiceImpl {
+
   @Service
-public class ComponentesServiceImpl implements ComponentesService{
+public class ComponetesServiceImpl implements ComponentesService{
     
     @Autowired
     private ComponentesDao componetesDao;
     
+    @Autowired
+    private ComponetnesRepositoryImpl componetnesRepositoryImpl;
+    /*
     @Override
     @Transactional(readOnly = true)
     public List<Componentes> listarComponentess() {
@@ -31,7 +35,7 @@ public class ComponentesServiceImpl implements ComponentesService{
     @Override
     @Transactional(readOnly = true)
     public Componentes encontrarComponentes(Componentes componetes) {
-        return componetesDao.findById(componetes.getIdComponentes()).orElse(null);
+        return componetesDao.findById(componetes.getIdComponente()).orElse(null);
     }
     
     @Override
@@ -45,7 +49,37 @@ public class ComponentesServiceImpl implements ComponentesService{
     public void eliminar(Componentes componetes) {
         componetesDao.delete(componetes);
     }
+    */
     
+    @Override
+    @Transactional(readOnly = true)
+    public List<Componentes> listarComponentess() {
+        return componetnesRepositoryImpl.getComponentes();
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Componentes encontrarComponentes(Componentes componetes) {
+        return componetesDao.findById(componetes.getIdComponente()).orElse(null);
+    }
+    
+    @Override
+    @Transactional
+    public void guardar(Componentes componetes) {
+        if(componetes.getIdComponente() == null){
+            componetesDao.insertarComponentes(componetes.getNombre(), componetes.getEstado(), 
+                    componetes.getFechaInstalacion(), componetes.getEquipo().getIdEquipo());
+        }else{
+            componetesDao.actualizarComponentes(componetes.getIdComponente(),componetes.getNombre(), componetes.getEstado(), 
+                    componetes.getFechaInstalacion(), componetes.getEquipo().getIdEquipo());
+        }
+            
+    }
+    
+    @Override
+    @Transactional
+    public void eliminar(Componentes componetes) {
+        componetesDao.eliminarComponentes(componetes.getIdComponente());
+    }
 }
   
-}

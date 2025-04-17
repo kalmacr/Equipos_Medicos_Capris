@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="~{layout/plantilla :: head}">
+        <title>TechShop</title>
+    </head>
+    <body>
+
+        <section th:fragment="botonesAgregarDiagnostico" class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-dark btn-block"
+                                data-bs-toggle="modal" data-bs-target="#agregarDiagnostico">
+                            <i class="fas fa-plus"></i> Agregar Diagnóstico
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section th:fragment="agregarDiagnostico">
+            <div id="agregarDiagnostico" class="modal fade" tabindex="-1" aria-labelledby="modalDiagnosticoLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title">Agregar Diagnóstico</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form th:action="@{/diagnosticos/guardar}" method="POST">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="descripcionProblema">Descripción del Problema</label>
+                                    <textarea name="descripcionProblema" id="descripcionProblema" class="form-control" rows="3"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="fecha">Fecha</label>
+                                    <input type="date" name="fecha" class="form-control" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="equipo">Equipo</label>
+                                    <select name="equipo.idEquipo" class="form-select" required>
+                                        <option disabled selected>Seleccione un equipo</option>
+                                        <option th:each="e : ${equipos}" th:value="${e.idEquipo}" th:text="${e.nombre}"></option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="error">Error</label>
+                                    <select name="error.idError" class="form-select" required>
+                                        <option disabled selected>Seleccione un error</option>
+                                        <option th:each="e : ${errores}" th:value="${e.idError}" th:text="${e.descripcion}"></option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="solucion">Solución</label>
+                                    <select name="solucion.idSolucion" class="form-select">
+                                        <option disabled selected>Seleccione una solución</option>
+                                        <option th:each="s : ${soluciones}" th:value="${s.idSolucion}" th:text="${s.descripcion}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="submit">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section th:fragment="listadoDiagnosticos">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Listado de Diagnósticos</h4>
+                            </div>
+                            <div th:if="${diagnosticos != null and !diagnosticos.empty}">
+                                <table class="table table-striped">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Fecha</th>
+                                            <th>Descripción</th>
+                                            <th>Equipo</th>
+                                            <th>Error</th>
+                                            <th>Solución</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="d, i : ${diagnosticos}">
+                                            <td>[[${i.count}]]</td>
+                                            <td>[[${#dates.format(d.fecha, 'dd/MM/yyyy')}]]</td>
+                                            <td>[[${d.descripcionProblema}]]</td>
+                                            <td>[[${d.equipo?.nombre}]]</td>
+                                            <td>[[${d.error?.descripcion}]]</td>
+                                            <td>[[${d.solucion?.descripcion}]]</td>
+                                            <td>
+                                                <a th:href="@{/diagnosticos/modificar/{id}(id=${d.idDiagnostico})}" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-pencil"></i>
+                                                </a>
+                                                <a th:href="@{/diagnosticos/eliminar/{id}(id=${d.idDiagnostico})}" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div th:if="${diagnosticos == null or diagnosticos.empty}" class="text-center p-2">
+                                <span>No hay diagnósticos registrados</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section th:fragment="editarDiagnostico">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <form method="POST" th:action="@{/diagnosticos/guardar}" th:object="${diagnostico}" class="was-validated">
+                        <!-- Campo oculto para ID -->
+                        <input type="hidden" th:field="*{idDiagnostico}" />
+
+                        <!-- Botones -->
+                        <section th:replace="~{diagnosticos/fragmentos :: botonesEditar}" />
+
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <h4>Editar Diagnóstico</h4>
+                            </div>
+                            <div class="card-body">
+
+                                <!-- Descripción -->
+                                <div class="mb-3">
+                                    <label for="descripcion">Descripción</label>
+                                    <textarea th:field="*{descripcionProblema}" class="form-control" id="descripcion" rows="3" required></textarea>
+                                </div>
+
+                                <!-- Fecha -->
+                                <div class="mb-3">
+                                    <label for="fecha">Fecha</label>
+                                    <input type="date" th:field="*{fecha}" id="fecha" class="form-control" required />
+                                </div>
+
+
+                                <!-- Solución asociada (si aplica) -->
+                                <div class="mb-3">
+                                    <label for="solucion">Solución Asociada</label>
+                                    <select th:field="*{solucion.idSolucion}" id="solucion" class="form-select" required>
+                                        <option value="" disabled>Seleccione una solución</option>
+                                        <option th:each="s : ${soluciones}" 
+                                                th:value="${s.idSolucion}" 
+                                                th:text="${s.descripcion}">
+                                        </option>
+                                    </select>
+                                </div>
+
+
+                                <!-- Equipo -->
+                                <div class="mb-3">
+                                    <label for="equipo">Equipo</label>
+                                    <select th:field="*{equipo.idEquipo}" class="form-select" required>
+                                        <option th:each="e : ${equipos}" 
+                                                th:value="${e.idEquipo}" 
+                                                th:text="${e.nombre}">
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!-- Error -->
+                                <div class="mb-3">
+                                    <label for="error">Error</label>
+                                    <select th:field="*{error.idError}" class="form-select" required>
+                                        <option th:each="e : ${errores}" 
+                                                th:value="${e.idError}" 
+                                                th:text="${e.descripcion}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section th:fragment="botonesEditar">
+            <div class="container py-4 mb-4 bg-light">
+                <div class="row">
+                    <div class="col-md-4 d-grid">
+                        <a th:href="@{/diagnosticos/listado}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Regresar
+                        </a>
+                    </div>
+                    <div class="col-md-4 d-grid">
+                        <a th:href="@{/diagnosticos/eliminar/}+${diagnostico.idDiagnostico}" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </div>
+                    <div class="col-md-4 d-grid">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i> Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </body>
+</html>

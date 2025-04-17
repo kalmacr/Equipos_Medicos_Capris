@@ -37,12 +37,12 @@
                             <div class="modal-body">
                                 <!-- Selección de Equipo -->
                                 <div class="mb-3">
-                                    
+
                                     <label for="usuario">Usuario</label>
                                     <select th:field="*{usuario}" class="form-select" required>
                                         <option value="" disabled selected>Seleccione un usuario</option>
                                         <option th:each="usuario : ${Usuarios}"
-                                                th:value="${usuario}"
+                                                th:value="${usuario.idUsuario}"
                                                 th:text="${usuario.nombre}"></option>
                                     </select>
                                 </div>
@@ -88,13 +88,15 @@
                                             <th>Usuario</th>
                                             <th>Fecha y Hora </th>
                                             <th>Accion</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="historial : ${historialUsuarioList}">
-                                            
+
+                                        <tr th:each="historial,contador : ${historialUsuarioList}">
+                                            <td>[[${contador.count}]]</td>
                                             <td>[[${historial.usuario.nombre}]]</td>
-                                            <td>[[${#dates.format(historial.fechaHora, 'yyyy-MM-dd HH:mm')}]]</td>
+                                            <td th:text="${historial.fechaHora}"></td>
                                             <td>[[${historial.accion}]]</td>
                                             <td>
                                                 <a th:href="@{/historialUsuario/modificar/}+${historial.idHistorial}" class="btn btn-success">
@@ -108,7 +110,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="text-center p-2" th:if="${historialUsuario == null or historialUsuario.empty}">
+                            <div class="text-center p-2" th:if="${historialUsuarioList == null or historialUsuarioList.empty}">
                                 <span>Lista Vacía</span>
                             </div>
                         </div>
@@ -125,51 +127,47 @@
             </div>
         </section>
 
-<section th:fragment="editarHistorialUsuario">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <form method="POST" th:action="@{/historialUsuario/guardar}" th:object="${historialUsuario}"
-                  class="was-validated" enctype="multipart/form-data">
-                <!-- Campo oculto para el ID del historial -->
-                <input type="hidden" th:field="*{idHistorial}" />
-                
-                <!-- Botones de acción -->
-                <section th:replace="~{historialUsuario/fragmentos :: botonesEditar}" />
-                
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h4>Actualizar Historial de Usuario</h4>
-                    </div>
-                    <div class="card-body">
-                        <!-- Selección del Usuario -->
-                        <div class="mb-3">
-                            <label for="usuario">Usuario</label>
-                            <select th:field="*{usuario}" class="form-select" required>
-                                <option value="" disabled selected>Seleccione un usuario</option>
-                                <option th:each="usuario : ${usuarios}" 
-                                        th:value="${usuario.idUsuario}" 
-                                        th:text="${usuario.nombre}"></option>
-                            </select>
+        <section th:fragment="editarHistorialUsuario">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <form method="POST" th:action="@{/historialUsuario/guardar}" th:object="${historialUsuario}"
+                          class="was-validated" enctype="multipart/form-data">
+                        <!-- Campo oculto para el ID del historial -->
+                        <input type="hidden" th:field="*{idHistorial}" />
+
+                        <!-- Botones de acción -->
+                        <section th:replace="~{historialUsuario/fragmentos :: botonesEditar}" />
+
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <h4>Actualizar Historial de Usuario</h4>
+                            </div>
+                            <div class="card-body">
+                                <!-- Selección del Usuario -->
+                                <div class="mb-3">
+                                    <label for="usuarioSelect">Usuario</label> <select id="usuarioSelect" th:field="*{usuario}" class="form-select" required>
+                                        <option value="" disabled>Seleccione un usuario</option>
+                                        <option th:each="usuarioOpt : ${Usuarios}"  th:value="${usuarioOpt.idUsuario}"
+                                                th:text="${usuarioOpt.nombre}"
+                                                th:selected="${usuarioOpt.idUsuario == historialUsuario.usuario?.idUsuario}"> </option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="fechaHora">Fecha y Hora</label>
+                                    <input type="datetime-local" id="fechaHora" th:field="*{fechaHora}" class="form-control" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="accion">Acción</label>
+                                    <textarea id="accion" th:field="*{accion}" class="form-control" rows="3" maxlength="255" required></textarea>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <!-- Fecha y Hora -->
-                        <div class="mb-3">
-                            <label for="fechaHora">Fecha y Hora</label>
-                            <input type="datetime-local" th:field="*{fechaHora}" class="form-control" required />
-                        </div>
-                        
-                        <!-- Acción -->
-                        <div class="mb-3">
-                            <label for="accion">Acción</label>
-                            <textarea th:field="*{accion}" class="form-control" rows="3" maxlength="255" required></textarea>
-                        </div>
-                    </div>
+                    </form>
                 </div>
-            </form>
-        </div>
-    </div>
-</section>
+            </div>
+        </section>
 
 
 
@@ -179,13 +177,13 @@
                 <div class="row">
                     <!-- Botón Regresar -->
                     <div class="col-md-4 d-grid">
-                        <a th:href="@{/alertaMantenimiento/listado}" class="btn btn-primary">
+                        <a th:href="@{/historialUsuario/listado}" class="btn btn-primary">
                             <i class="fas fa-arrow-left"></i> Regresar
                         </a>
                     </div>
                     <!-- Botón Eliminar -->
                     <div class="col-md-4 d-grid">
-                        <a th:href="@{/alertaMantenimiento/eliminar/}+${alertaMantenimiento.idAlerta}" class="btn btn-danger">
+                        <a th:href="@{/historialUsuario/eliminar/}+${historialUsuario.idHistorial}" class="btn btn-danger">
                             <i class="fas fa-trash"></i> Eliminar
                         </a>
                     </div>

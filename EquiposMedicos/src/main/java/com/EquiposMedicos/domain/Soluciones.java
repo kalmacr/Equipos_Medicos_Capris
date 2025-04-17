@@ -21,9 +21,20 @@ public class Soluciones implements Serializable {
     private Long idSolucion;
 
     private String descripcion;
+    @Temporal(TemporalType.DATE)
     private Date fechaImplementacion;
 
     @ManyToOne
     @JoinColumn(name = "idError", referencedColumnName = "idError")
     private Errores error;
+
+    public Soluciones(String descripcion, Date fechaImplementacion, Errores error) {
+        this.descripcion = descripcion;
+        this.fechaImplementacion = fechaImplementacion;
+        this.error = error;
+    }
+
+    public Soluciones() {
+    }
+    
 }

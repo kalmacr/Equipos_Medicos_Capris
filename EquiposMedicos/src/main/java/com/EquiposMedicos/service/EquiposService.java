@@ -13,6 +13,8 @@ import java.util.List;
     
     List<Equipo> listarEquiposs();
     Equipo encontrarEquipos(Equipo centro);
+    Equipo encontrarEquiposbyId(Long idEquipo);
     void guardar(Equipo centro);
     void eliminar(Equipo centro);
+    
 }

@@ -18,10 +18,20 @@ public class Errores implements Serializable {
 
     private String codigoError;
     private String descripcion;
+    @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
     private String tipo;
 
-    @ManyToOne
-    @JoinColumn(name = "idPrioridad", referencedColumnName = "idPrioridad")
-    private PrioridadError prioridad;
+    public Errores(String codigoError, String descripcion, Date fechaRegistro, String tipo) {
+        this.codigoError = codigoError;
+        this.descripcion = descripcion;
+        this.fechaRegistro = fechaRegistro;
+        this.tipo = tipo;
+    }
+
+    public Errores() {
+    }
+    
+    
+
 }
