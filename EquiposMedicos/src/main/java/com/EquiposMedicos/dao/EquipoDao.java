@@ -7,6 +7,7 @@ package com.EquiposMedicos.dao;
 import com.EquiposMedicos.domain.Equipo;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +18,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface EquipoDao extends JpaRepository<Equipo, Long> {
     
-    
+    List<Equipo> findByCategoriaEquipo_IdCategoria(Long idCategoria);
     @Procedure(name = "insertar_equipos", procedureName = "equipos_mgmt.insertar_equipos")
     void insertarEquipo(
         @Param("p_nombre") String nombre,

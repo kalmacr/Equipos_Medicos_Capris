@@ -63,6 +63,11 @@ public class CategoriaEquipoServiceImpl implements CategoriaEquipoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public CategoriaEquipo encontrarCategoriabyID(Long idCategoria) {
+        return categoriaDao.findById(idCategoria).orElse(null);
+    }
+    @Override
     @Transactional
     public void guardar(CategoriaEquipo categoria) {
         if (categoria.getIdCategoria() == null) {

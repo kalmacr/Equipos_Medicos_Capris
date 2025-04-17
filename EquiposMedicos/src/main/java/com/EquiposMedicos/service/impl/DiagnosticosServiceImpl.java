@@ -81,4 +81,9 @@ public class DiagnosticosServiceImpl implements DiagnosticosService {
         diagnosticosDao.eliminarEquipo(idDiagnostico);
     }
     
+    @Override
+    public List<Diagnosticos> listarPorEquipo(Long idEquipo) {
+        return diagnosticosDao.findByEquipo_IdEquipo(idEquipo);
+    }
+    
 }

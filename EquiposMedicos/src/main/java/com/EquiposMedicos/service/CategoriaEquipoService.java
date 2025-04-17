@@ -14,6 +14,7 @@ import java.util.List;
 public interface CategoriaEquipoService {
     List<CategoriaEquipo> listarCategorias();
     CategoriaEquipo encontrarCategoria(CategoriaEquipo categoria);
+    CategoriaEquipo encontrarCategoriabyID(Long idCategoria);
     void guardar(CategoriaEquipo categoria);
     void eliminar(CategoriaEquipo categoria);
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface DiagnosticosService {
     List<Diagnosticos> getDiagnosticos(boolean activos);
+    List<Diagnosticos> listarPorEquipo(Long idEquipo);
     Diagnosticos getDiagnosticoById(Long idDiagnostico);
     void saveDiagnostico(Diagnosticos diagnostico);
     void deleteDiagnostico(Long idDiagnostico);

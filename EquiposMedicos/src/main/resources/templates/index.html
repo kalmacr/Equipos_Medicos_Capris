@@ -1,11 +1,89 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml">
-    <head th:replace="~{layout/plantilla :: head}">
-        <title>TechShop</title>        
-    </head>
-    <body>
-        <header th:replace="~{layout/plantilla :: header}"/>
-        <footer th:replace="~{layout/plantilla :: footer}"/>          
-    </body>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout/plantilla :: head}">
+    <title>TechShop</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Header (Navbar fija arriba) -->
+    <header th:replace="~{layout/plantilla :: header}"></header>
+
+    <!-- Contenido principal con padding-top para no ocultarlo -->
+    <main class="container flex-grow-1 pt-5 mt-5">
+
+        <!-- Categorías -->
+        <h2>Categorías de Equipos</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-5 pt-2 mt-2">
+            <div class="col" th:each="categoria : ${categorias}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${categoria.nombreCategoria}"></h5>
+                        <a th:href="@{'/categorias/seleccionar/' + ${categoria.idCategoria}}" class="btn btn-primary">Seleccionar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Equipos -->
+        <hr class="my-5" th:if="${categoriaSeleccionada != null}"/>
+
+        <div th:if="${categoriaSeleccionada != null}">
+            <h3 th:text="'Equipos de la categoría: ' + ${categoriaSeleccionada.nombreCategoria}"></h3>
+            <table class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Serie</th>
+                        <th>Fabricante</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="equipo : ${equipos}">
+                        <td th:text="${equipo.nombre}"></td>
+                        <td th:text="${equipo.tipo}"></td>
+                         <td th:text="${equipo.numeroSerie}"></td>
+                        <td th:text="${equipo.fabricante}"></td>
+                        <td>
+                            <a th:href="@{'/equipos/seleccionar/' + ${equipo.idEquipo}}" class="btn btn-outline-primary btn-sm">
+                                Ver Diagnósticos
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Diagnósticos -->
+        <div th:if="${equipoSeleccionado != null}">
+            <h4 th:text="'Diagnósticos del equipo: ' + ${equipoSeleccionado.nombre}"></h4>
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Descripción del Problema</th>
+                        <th>Codigo Error</th>
+                        <th>Error</th>
+                        <th>Tipo de error</th>
+                        <th>Solución</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="diag : ${diagnosticos}">
+                        <td th:text="${#dates.format(diag.fecha, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${diag.descripcionProblema}"></td>
+                        <td th:text="${diag.error.codigoError}"></td>
+                        <td th:text="${diag.error.descripcion}"></td>
+                        <td th:text="${diag.error.tipo}"></td>
+                        <td th:text="${diag.solucion.descripcion}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    
+    <footer th:replace="~{layout/plantilla :: footer}" class="bg-light py-3 mt-auto"></footer>
+</body>
 </html>

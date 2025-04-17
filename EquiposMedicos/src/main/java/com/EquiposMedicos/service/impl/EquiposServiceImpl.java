@@ -86,4 +86,8 @@ public class EquiposServiceImpl implements EquiposService{
         equiposDao.eliminarEquipo(equipos.getIdEquipo());
     }
     
+    public List<Equipo> listarPorCategoria(Long idCategoria) {
+        return equiposDao.findByCategoriaEquipo_IdCategoria(idCategoria);
+    }
+    
 }
