@@ -26,13 +26,12 @@ public class HistorialUsuarioController {
     private HistorialUsuarioService historialUsuarioService;
     @Autowired
     private UsuariosServices usuarioService;
-    @Autowired
-    private UsuariosDao usuariosDao;
+
 
     @GetMapping("/listado")
     public String listado(Model model) {
         var historial = historialUsuarioService.listarHistorialUsuario();
-        List<Usuario> Usuarios = usuariosDao.findAll();
+        List<Usuario> Usuarios = usuarioService.getUsuarios(true);
         model.addAttribute("Usuarios", Usuarios);
         model.addAttribute("historialUsuarioList", historial);
         model.addAttribute("totalHistorialUsuario", historial.size());
@@ -43,10 +42,9 @@ public class HistorialUsuarioController {
 
     @GetMapping("/nuevo")
     public String historialNuevo(Model model) {
-        List<Usuario> Usuarios = usuariosDao.findAll();
+        List<Usuario> Usuarios = usuarioService.getUsuarios(true);
         model.addAttribute("Usuarios", Usuarios);
         model.addAttribute("historialUsuario", new HistorialUsuario());
-        System.out.println("Estados compro 1112 cargados: " + Usuarios);
 
         return "historialUsuario/listado";
     }

@@ -30,11 +30,9 @@ public class ErroresPorCategoria {
     private Long idErrorCategoria;
     
     @Column(name = "fechaRegistro", nullable = false)
-    private Date fechaRegistro;
+    private LocalDateTime  fechaRegistro;
     
-    @Column(name = "accion", length = 255, nullable = false)
-    private String accion;
-    
+   
     @ManyToOne
     @JoinColumn(name = "idCategoria")
     private CategoriaEquipo categoriaEquipo; 

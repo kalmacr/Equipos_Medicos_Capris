@@ -31,11 +31,9 @@ public class AlertaMantenimientoController {
 
     @Autowired
     private AlertaMantenimientoService alertaMantenimientoService;
-    @Autowired
-    private EquipoDao equipoDao;
     
     @Autowired
-    private EstadoDao estadoDao;
+    private EstadoService estadoService;
     
     @Autowired
     private EquiposService equiposService;
@@ -43,7 +41,7 @@ public class AlertaMantenimientoController {
     @GetMapping("/listado")
     public String listado(Model model) {
         var alertas = alertaMantenimientoService.listarAlertaMantenimientos();
-        List<Estado>Estados = estadoDao.findAll();
+        List<Estado>Estados = estadoService.getEstados();
         List<Equipo>equipos = equiposService.listarEquiposs();
         System.out.println("Estados compro 1112 cargados: " + equipos);
         model.addAttribute("Estados", Estados);
@@ -57,12 +55,11 @@ public class AlertaMantenimientoController {
 
     @GetMapping("/nuevo")
     public String alertasNuevo(Model model) {
-        List<Estado>Estados = estadoDao.findAll();
-        List<Equipo>Equipos = equipoDao.findAll();
+        List<Estado>Estados = estadoService.getEstados();
+        List<Equipo>Equipos = equiposService.listarEquiposs();
         model.addAttribute("Equipos", Equipos);
-        model.addAttribute("Estados", Estados); // Añade los estados al modelo
+        model.addAttribute("Estados", Estados); 
         model.addAttribute("alertaMantenimiento", new AlertaMantenimiento());
-        System.out.println("Estados compro 1112 cargados: " + Estados);
 
         return "alertaMantenimiento/modifica";
     }
@@ -81,8 +78,8 @@ public class AlertaMantenimientoController {
 
     @GetMapping("/modificar/{idAlerta}")
     public String alertaMantenimientoModificar(AlertaMantenimiento alertaMantenimiento, Model model) {
-        List<Estado>Estados = estadoDao.findAll();
-        List<Equipo>Equipos = equipoDao.findAll();
+        List<Estado>Estados = estadoService.getEstados();
+        List<Equipo>Equipos = equiposService.listarEquiposs();
         model.addAttribute("Equipos", Equipos);
         model.addAttribute("Estados", Estados);
         alertaMantenimiento = alertaMantenimientoService.encontrarAlertaMantenimiento(alertaMantenimiento);

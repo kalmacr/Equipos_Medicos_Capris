@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="~{layout/plantilla :: head}">
+        <title>TechShop</title>
+    </head>
+    <body>
+
+        <!-- 1. Botón Agregar ErroresPorCategoria -->
+        <section th:fragment="botonesAgregar" class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-dark btn-block"
+                                data-bs-toggle="modal" data-bs-target="#agregarErroresPorCategoria">
+                            <i class="fas fa-plus"></i> Agregar Errores Por Categoria
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section th:fragment="agregarErroresPorCategoria">
+            <div id="agregarErroresPorCategoria" class="modal fade" tabindex="-1"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title">Agregar Errores Por Categoria</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form th:action="@{/erroresPorCategoria/guardar}" th:object="${erroresPorCategoria}"
+                              method="POST" class="was-validated" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <!-- Fecha de Registro -->
+                                <div class="mb-3">
+                                    <label for="fechaRegistro">Fecha de Registro</label>
+                                    
+                                    <input type="datetime-local" th:field="*{fechaRegistro}" class="form-control" required />
+                                </div>
+
+                                <!-- Selección de Categoría -->
+                                <div class="mb-3">
+                                    <label for="categoriaEquipo">Categoría</label>
+                                    <select th:field="*{categoriaEquipo}" class="form-select" required>
+                                        <option value="" disabled selected>Seleccione una categoría</option>
+                                        <option th:each="categoria : ${categorias}" 
+                                                th:value="${categoria.idCategoria}" 
+                                                th:text="${categoria.nombreCategoria}"></option>
+                                    </select>
+                                </div>
+
+                                <!-- Descripción del Error -->
+                                <div class="mb-3">
+                                    <label for="Error">Error</label>
+                                    <select th:field="*{Errores}" class="form-select" required>
+                                        <option value="" disabled selected>Seleccione un error</option>
+                                        <option th:each="error : ${Errores}"
+                                                th:value="${error.idError}" 
+                                                th:text="${error.descripcion}"></option>
+                                    </select>
+
+
+
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="submit">Guardar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 3. Listado de ErroresPorCategoria -->
+        <section th:fragment="listadoagregarErroresPorCategoria" id="erroresPorCategoria">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Lista de Errores Por Categoria</h4>
+                            </div>
+                            <div th:if="${listaErroresPorCategoria != null and !listaErroresPorCategoria.empty}">
+                                <table class="table table-striped table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Fecha de Registro</th>
+                                            <th>Categoria</th>
+                                            <th>Error</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="erroresPorCategoria, contador : ${listaErroresPorCategoria}">
+                                            <td>[[${contador.count}]]</td>
+                                            <td>[[${erroresPorCategoria.fechaRegistro}]]</td>
+                                            <td>[[${erroresPorCategoria.categoriaEquipo.nombreCategoria}]]</td>
+                                            <td>[[${erroresPorCategoria.errores.descripcion}]]</td>
+                                            <!--se utiliza en usuarios aqui no<td th:text="${erroresPorCategoria.activos ? 'Sí' : 'No'}"></td> -->
+                                            <td>
+                                                <a th:href="@{/erroresPorCategoria/modificar/}+${erroresPorCategoria.idErrorCategoria}" class="btn btn-success">
+                                                    <i class="fas fa-pencil"></i> Actualizar
+                                                </a>
+                                                <a th:href="@{/erroresPorCategoria/eliminar/}+${erroresPorCategoria.idErrorCategoria}" class="btn btn-danger">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-center p-2" th:if="${erroresPorCategoria == null or listaErroresPorCategoria.empty}">
+                                <span>Lista Vacia</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center bg-success text-white mb-3">
+                            <div class="card-body">
+                                <h3>Total de Errores Por Categoria</h3>
+                                <h4 class="fs-2"><i class="fas fa-users"></i> [[${totalErroresPorCategoria}]]</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Formulario Editar ErroresPorCategoria -->
+        <section th:fragment="editarErroresPorCategoria">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <form method="POST" th:action="@{/erroresPorCategoria/guardar}" th:object="${erroresPorCategoria}"
+                          class="was-validated" enctype="multipart/form-data">
+                        <input type="hidden" th:field="*{idErrorCategoria}" />
+                        <section th:replace="~{erroresPorCategoria/fragmentos :: botonesEditar}" />
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <h4>Actualizar Errores por Categoria</h4>
+                            </div>                           
+                            <div class="card-body">
+                                 <input type="hidden" name="idErrorCategoria" value="idErrorCategoria"> <!-- Aquí va el ID del error -->
+   
+                                <!-- Fecha de Registro -->
+                                <div class="mb-3">
+                                    <label for="fechaRegistro">Fecha de Registro</label>
+                                    <input type="datetime-local" th:field="*{fechaRegistro}" class="form-control" required />
+                                </div>
+                                <!-- Selección de Categoría -->
+                                <div class="mb-3">
+                                    <label for="categoriaEquipo">Categoría</label>
+                                    <select th:field="*{categoriaEquipo}" class="form-select" required>
+                                        <option value="" disabled selected>Seleccione una categoría</option>
+                                        <option th:each="categoria : ${categorias}" 
+                                                th:value="${categoria.idCategoria}" 
+                                                th:text="${categoria.nombreCategoria}"></option>
+                                    </select>
+                                </div>
+                                <!-- Descripción del Error -->
+                                <div class="mb-3">
+                                    <label for="Error">Error</label>
+                                    <select th:field="*{Errores}" class="form-select" required>
+                                        <option value="" disabled selected>Seleccione un error</option>
+                                        <option th:each="error : ${Errores}"
+                                                th:value="${error.idError}" 
+                                                th:text="${error.descripcion}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Botones Editar -->
+        <section th:fragment="botonesEditar">
+            <div class="container py-4 mb-4 bg-light">
+                <div class="row">
+                    <div class="col-md-4 d-grid">
+                        <a th:href="@{/erroresPorCategoria/listado}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Regresar
+                        </a>
+                    </div>
+                    <div class="col-md-4 d-grid">
+                        <a th:href="@{/erroresPorCategoria/eliminar/}+${erroresPorCategoria.idErrorCategoria}" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </div>
+                    <div class="col-md-4 d-grid">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i> Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </body>
+</html>
